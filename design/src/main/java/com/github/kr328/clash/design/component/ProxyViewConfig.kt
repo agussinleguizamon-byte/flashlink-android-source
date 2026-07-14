@@ -15,6 +15,12 @@ class ProxyViewConfig(val context: Context, var proxyLine: Int) {
 
     val selectedControl = context.getColor(R.color.flashlink_orange)
     val selectedBackground = context.getColor(R.color.flashlink_orange_soft)
+    val routeTitle = context.getColor(R.color.flashlink_ink)
+    val routeMuted = context.getColor(R.color.flashlink_muted)
+    val routeBorder = context.getColor(R.color.flashlink_orange)
+    val routeCircle = context.getColor(R.color.flashlink_orange_soft)
+    val routeUnselectedCircle = Color.rgb(220, 220, 220)
+    val routeWhite = Color.WHITE
 
     val unselectedControl = context.resolveThemedColor(com.google.android.material.R.attr.colorOnSurface)
     val unselectedBackground: Int
@@ -37,4 +43,10 @@ class ProxyViewConfig(val context: Context, var proxyLine: Int) {
 
     val cardRadius = context.getPixels(R.dimen.proxy_card_radius).toFloat()
     var cardOffset = context.getPixels(R.dimen.proxy_card_offset).toFloat()
+
+    val routeFlagSize = context.getPixels(R.dimen.proxy_route_flag_size).toFloat()
+    val routeIndicatorSize = context.getPixels(R.dimen.proxy_route_indicator_size).toFloat()
+    val routeGap = context.getPixels(R.dimen.proxy_route_gap).toFloat()
+    val routeTitleSize = context.getPixels(R.dimen.proxy_route_title_size).toFloat()
+    val routeSubtitleSize = context.getPixels(R.dimen.proxy_route_subtitle_size).toFloat()
 }

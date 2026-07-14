@@ -22,11 +22,14 @@ class ProxyViewState(
     var title: String = ""
     var subtitle: String = ""
     var delayText: String = ""
+    var displayTitle: String = ""
+    var countryFlag: String = "🌐"
     var background: Int = config.unselectedBackground
     var controls: Int = config.unselectedControl
 
     private var delay: Int = 0
-    private var selected: Boolean = false
+    var selected: Boolean = false
+        private set
     private var parentNow: String = ""
     private var linkNow: String? = null
 
@@ -55,6 +58,9 @@ class ProxyViewState(
             title = proxy.title
             subtitle = proxy.subtitle
         }
+
+        displayTitle = title.replace(LEADING_SYMBOLS, "").ifBlank { title }
+        countryFlag = flagFor(title)
 
         if (delay != proxy.delay) {
             delay = proxy.delay
@@ -123,5 +129,33 @@ class ProxyViewState(
         lastFrameTime = frameTime
 
         return invalidate
+    }
+
+    fun qualityBars(): Int = when {
+        delay !in 1..Short.MAX_VALUE -> 0
+        delay <= 160 -> 3
+        delay <= 360 -> 2
+        else -> 1
+    }
+
+    companion object {
+        private val LEADING_SYMBOLS = Regex("^[\\p{So}\\s]+")
+
+        private fun flagFor(name: String): String {
+            val key = name.lowercase()
+            return when {
+                "美国" in name || "us" in key || "united states" in key -> "🇺🇸"
+                "香港" in name || "hong kong" in key -> "🇭🇰"
+                "日本" in name || "japan" in key || "jp" in key -> "🇯🇵"
+                "新加坡" in name || "singapore" in key || "sg" in key -> "🇸🇬"
+                "加拿大" in name || "canada" in key || "ca" in key -> "🇨🇦"
+                "英国" in name || "uk" in key || "united kingdom" in key -> "🇬🇧"
+                "德国" in name || "germany" in key || "de" in key -> "🇩🇪"
+                "韩国" in name || "korea" in key || "kr" in key -> "🇰🇷"
+                "台湾" in name || "taiwan" in key || "tw" in key -> "🇹🇼"
+                "澳大利亚" in name || "australia" in key || "au" in key -> "🇦🇺"
+                else -> "🌐"
+            }
+        }
     }
 }

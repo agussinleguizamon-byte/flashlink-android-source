@@ -29,10 +29,26 @@ class ExternalControlActivity : Activity(), CoroutineScope by MainScope() {
         @Suppress("DEPRECATION")
         overridePendingTransition(0, 0)
 
-        when(intent.action) {
+        handleExternalIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleExternalIntent(intent)
+    }
+
+    private fun handleExternalIntent(externalIntent: Intent) {
+        when(externalIntent.action) {
             Intent.ACTION_VIEW -> {
-                val uri = intent.data ?: return finish()
-                val url = uri.getQueryParameter("url") ?: return finish()
+                val uri = externalIntent.data ?: run {
+                    finish()
+                    return
+                }
+                val url = uri.getQueryParameter("url") ?: run {
+                    finish()
+                    return
+                }
 
                 launch {
                     try {
@@ -85,7 +101,7 @@ class ExternalControlActivity : Activity(), CoroutineScope by MainScope() {
                 Toast.makeText(this, R.string.external_control_stopped, Toast.LENGTH_LONG).show()
             }
         }
-        return finish()
+        finish()
     }
 
     private fun startClash() {
