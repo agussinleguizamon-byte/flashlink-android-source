@@ -33,6 +33,7 @@ app/src/main/assets
 # KeyStore
 signing.properties
 *.keystore
+release.keystore
 *.jks
 
 # clion cmake build
