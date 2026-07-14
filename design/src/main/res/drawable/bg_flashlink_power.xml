@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <solid android:color="@color/flashlink_orange" />
+    <size android:width="168dp" android:height="168dp" />
+    <stroke android:width="5dp" android:color="#FFFFB675" />
+</shape>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="self" type="com.github.kr328.clash.design.MainDesign" />
+        <variable name="clashRunning" type="boolean" />
+        <variable name="forwarded" type="String" />
+        <variable name="mode" type="String" />
+        <variable name="profileName" type="String" />
+        <variable name="colorClashStarted" type="int" />
+        <variable name="colorClashStopped" type="int" />
+        <variable name="hasProviders" type="boolean" />
+        <import type="com.github.kr328.clash.design.MainDesign.Request" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_light_background"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingStart="@{self.surface.insets.start}"
+        android:paddingEnd="@{self.surface.insets.end}"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingStart="24dp"
+            android:paddingTop="@{self.surface.insets.top + 18}"
+            android:paddingEnd="24dp"
+            android:paddingBottom="@{self.surface.insets.bottom + 28}">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="8dp"
+                    android:layout_height="32dp"
+                    android:background="@color/flashlink_orange" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="闪连"
+                        android:textColor="@color/flashlink_ink"
+                        android:textSize="25sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="全球网络，极速连接"
+                        android:textColor="@color/flashlink_muted"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:contentDescription="@string/about"
+                    android:onClick="@{() -> self.request(Request.OpenAbout)}"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_baseline_info"
+                    android:tint="@color/flashlink_orange" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="220dp"
+                android:layout_height="220dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/bg_flashlink_power"
+                android:clickable="true"
+                android:contentDescription="@string/tap_to_start"
+                android:elevation="8dp"
+                android:focusable="true"
+                android:onClick="@{() -> self.request(Request.ToggleStatus)}">
+
+                <ImageView
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_flashlink_power" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="@{clashRunning ? @string/running : @string/stopped}"
+                android:textColor="@color/flashlink_ink"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@{clashRunning ? @string/format_traffic_forwarded(forwarded) : @string/tap_to_start}"
+                android:textColor="@color/flashlink_muted"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_flashlink_mode"
+                android:text="@{mode}"
+                android:textColor="@color/flashlink_orange"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:background="@drawable/bg_flashlink_node_card"
+                android:clickable="true"
+                android:elevation="4dp"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:onClick="@{() -> self.request(Request.OpenProxy)}"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@color/flashlink_orange_soft"
+                    android:gravity="center"
+                    android:text="🌐"
+                    android:textSize="24sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@{profileName != null ? profileName : @string/not_selected}"
+                        android:textColor="@color/flashlink_ink"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="线路选择"
+                        android:textColor="@color/flashlink_muted"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="线路选择"
+                    android:src="@drawable/ic_baseline_arrow_back"
+                    android:rotation="180"
+                    android:tint="@color/flashlink_orange" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="@{() -> self.request(Request.OpenProfiles)}"
+                    android:paddingVertical="12dp"
+                    android:text="订阅"
+                    android:textColor="@color/flashlink_ink"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="@{() -> self.request(Request.OpenLogs)}"
+                    android:paddingVertical="12dp"
+                    android:text="状态"
+                    android:textColor="@color/flashlink_ink"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:onClick="@{() -> self.request(Request.OpenSettings)}"
+                    android:paddingVertical="12dp"
+                    android:text="设置"
+                    android:textColor="@color/flashlink_ink"
+                    android:textSize="15sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</layout>
