@@ -201,9 +201,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:onClick="@{() -> self.request(Request.OpenLogs)}"
+                    android:onClick="@{() -> self.request(Request.OpenAccount)}"
                     android:paddingVertical="12dp"
-                    android:text="状态"
+                    android:text="会员"
                     android:textColor="@color/flashlink_ink"
                     android:textSize="15sp" />
 
