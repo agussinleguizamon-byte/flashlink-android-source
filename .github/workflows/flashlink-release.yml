@@ -96,6 +96,32 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+      - name: Publish APK to official website
+        env:
+          RELEASE_SSH_KEY: ${{ secrets.RELEASE_SSH_KEY }}
+          RELEASE_SSH_HOST: ${{ secrets.RELEASE_SSH_HOST }}
+          RELEASE_SSH_USER: ${{ secrets.RELEASE_SSH_USER }}
+          RELEASE_SSH_PORT: ${{ secrets.RELEASE_SSH_PORT }}
+          RELEASE_SSH_DIR: ${{ secrets.RELEASE_SSH_DIR }}
+          VERSION: ${{ steps.version.outputs.name }}
+        run: |
+          set -euo pipefail
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$RELEASE_SSH_KEY" > ~/.ssh/flashlink_release
+          chmod 600 ~/.ssh/flashlink_release
+          ssh-keyscan -p "$RELEASE_SSH_PORT" "$RELEASE_SSH_HOST" >> ~/.ssh/known_hosts
+          source="release/FlashLink_${VERSION}_android_arm64.apk"
+          remote_tmp="$RELEASE_SSH_DIR/.FlashLink_android_arm64_latest.apk.tmp"
+          remote_final="$RELEASE_SSH_DIR/FlashLink_android_arm64_latest.apk"
+          scp -i ~/.ssh/flashlink_release -P "$RELEASE_SSH_PORT" "$source" "$RELEASE_SSH_USER@$RELEASE_SSH_HOST:$remote_tmp"
+          ssh -i ~/.ssh/flashlink_release -p "$RELEASE_SSH_PORT" "$RELEASE_SSH_USER@$RELEASE_SSH_HOST" \
+            "mv '$remote_tmp' '$remote_final' && chmod 664 '$remote_final'"
+
+      - name: Verify official download
+        run: |
+          curl --fail --silent --show-error --head \
+            https://7a.cc.cd/downloads/flashlink/FlashLink_android_arm64_latest.apk
+
       - name: Publish GitHub release
         if: inputs.publish_release
         uses: softprops/action-gh-release@v2
