@@ -71,7 +71,9 @@ jobs:
           echo "code=$code" >> "$GITHUB_OUTPUT"
 
       - name: Build signed APK and AAB
-        run: ./gradlew --no-daemon --console=plain :app:assembleAlphaRelease :app:bundleAlphaRelease
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon --console=plain :app:assembleAlphaRelease :app:bundleAlphaRelease
 
       - name: Verify and stage artifacts
         env:
